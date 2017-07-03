@@ -50,28 +50,47 @@ class Game extends React.Component {
       history: [
         {
           squares: Array(9).fill(null),
+          movePostion: null
         }
       ],
       stepNumber: 0,
-      xIsNext: true
+      xIsNext: true,
     };
   }
 
   handleClick(i) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
-    const current = history[history.length - 1];
+    const stepNumber = history.slice().length;
+    const current = history[stepNumber - 1];
     const squares = current.squares.slice();
+    const lastMove = this.getPosition(i);
+
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
       history: history.concat([{
-        squares: squares
+        squares: squares,
+        movePosition: lastMove
       }]),
-      stepNumber: history.length,
-      xIsNext: !this.state.xIsNext
+      stepNumber: stepNumber,
+      xIsNext: !this.state.xIsNext,
     });
+  }
+
+  getPosition(move) {
+    const grid = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8]
+    ];
+    for(let i = 0; i < grid.length; i++){
+      var index = grid[i].indexOf(move);
+      if (index >= 0) {
+        return (index + 1) + ', ' + (i + 1);
+      }
+    }
   }
 
   jumpTo(step) {
@@ -88,11 +107,18 @@ class Game extends React.Component {
 
     const moves = history.map((step, move) => {
       const desc = move ?
-        'Move #' + move :
+        'Move (' + step.movePosition + ')' :
         'Game start';
+      let link = null;
+
+      if (move === this.state.stepNumber) {
+        link = <strong>{desc}</strong>
+      } else {
+        link = <a href="#" onClick={() => this.jumpTo(move)}>{desc}</a>;
+      }
       return (
         <li key={move}>
-          <a href="#" onClick={() => this.jumpTo(move)}>{desc}</a>
+          {link}
         </li>
       );
     });
