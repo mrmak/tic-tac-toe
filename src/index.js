@@ -54,7 +54,7 @@ class Game extends React.Component {
         }
       ],
       stepNumber: 0,
-      xIsNext: true,
+      xIsNext: true
     };
   }
 
@@ -75,7 +75,7 @@ class Game extends React.Component {
         movePosition: lastMove
       }]),
       stepNumber: stepNumber,
-      xIsNext: !this.state.xIsNext,
+      xIsNext: !this.state.xIsNext
     });
   }
 
@@ -96,7 +96,7 @@ class Game extends React.Component {
   jumpTo(step) {
     this.setState({
       stepNumber: step,
-      xIsNext: step % 2 ? false : true,
+      xIsNext: step % 2 ? false : true
     });
   }
 
@@ -163,7 +163,7 @@ function calculateWinner(squares) {
     [1, 4, 7],
     [2, 5, 8],
     [0, 4, 8],
-    [2, 4, 6],
+    [2, 4, 6]
   ];
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
